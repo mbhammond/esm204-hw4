@@ -203,5 +203,31 @@ policy_A <- policy_A_opt1_final + policy_A_opt2_final
 
 ```
 
+```{r}
+# Policy B - Immediate & Strong Action
 
+warming <- warming %>% 
+  mutate(warming_norm_damage, pv_option_b = warming_norm_damage / (1 + .02)^(...1))
+
+warming <- warming %>%
+  mutate(warming_norm_damage, steady = warming_norm_damage[30] / (1 + .02)^(...1[30]))
+
+
+present_value <- (warming$pv_option_b[1:29])
+baseline_damage <- (warming$warming_norm_damage[1:29])
+
+pv_policy_b <- data.frame(baseline_damage, present_value)
+
+df_1 <- data.frame(year = warming$year[1:29],
+                   baseline_damages = pv_policy_b$baseline_damage[1:29],
+                   present_value_b = pv_policy_b$present_value[1:29])
+
+df_2 <- data.frame(year = warming$year[30:79],
+                   baseline_damages = warming$warming_norm_damage[30:79],
+                   present_value_b = warming$steady[30:79])
+
+policy_B_final_df <- rbind(df_1, df_2)
+
+policy_b_sum_pv <- sum(policy_B_final_df$present_value_b[1:79])
+```
 
