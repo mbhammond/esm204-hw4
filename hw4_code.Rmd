@@ -64,4 +64,25 @@ damage_model <- function(x){-1059530137756.23*x + 19409275730643.3*x^2}
 
 ```
 
+## Question 2
+
+```{r}
+warming$warming_norm_damage <- damage_model(warming$warming_baseline)
+
+warming$warming_pulse_damage <- damage_model(warming$warming_pulse)
+
+warming$warming_damage_diff <- warming$warming_pulse_damage - warming$warming_norm_damage
+
+warming$warming_damage_diff_per_CO2 <- warming$warming_damage_diff/35000000000
+
+##PUT PRETTY GRAPH HERE!!!'
+
+```
+
+
+## Question 3
+
+```{r}
+
+```
 
