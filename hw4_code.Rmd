@@ -124,6 +124,8 @@ warming <- warming %>%
 warming <- warming %>% 
   mutate(warming_damage_diff_per_CO2, present_value_10 = warming_damage_diff_per_CO2 / (1 + .10)^(...1))
 
+
+
 pv_1 <- sum(warming$present_value_1[1:79])
 pv_2 <- sum(warming$present_value_2[1:79])
 pv_3 <- sum(warming$present_value_3[1:79])
@@ -147,5 +149,31 @@ ggplot(data = scc_rate, aes(y = scc, x = discount_rate)) +
        y = "Social Cost of Carbon",
        title = "SCC and Discount Rate") +
   theme_minimal()
+```
+
+## Question 4
+
+```{r}
+
+# from Ramsey's Rule, we get a discount rate of 2.1% 
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_ramsey = warming_damage_diff_per_CO2 / (1 + .021)^(...1))
+
+pv_ramsey <- sum(warming$present_value_ramsey[1:79])
+
+scc <- pv_ramsey
+discount_rate <- .021
+
+ramsey_rate <- data.frame(scc_ramsey, discount_ramsey)
+
+ggplot() +
+  geom_point(data = scc_rate, 
+             aes(x = discount_rate, y = scc), 
+             color = "green") +
+  geom_point(data = ramsey_rate, 
+             aes(x = discount_ramsey, y = scc_ramsey), 
+             color = "gold")
+
 ```
 
