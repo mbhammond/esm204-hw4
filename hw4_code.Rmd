@@ -167,13 +167,41 @@ discount_rate <- .021
 
 ramsey_rate <- data.frame(scc_ramsey, discount_ramsey)
 
+caption <- "Figure X. the gold dot represents the Ramsey Rate discount rate and Social Cost of Carbon calculation"
 ggplot() +
   geom_point(data = scc_rate, 
              aes(x = discount_rate, y = scc), 
              color = "green") +
   geom_point(data = ramsey_rate, 
              aes(x = discount_ramsey, y = scc_ramsey), 
-             color = "gold")
+             color = "gold") +
+    labs(x = "Discount Rate",
+       y = "Social Cost of Carbon",
+       title = "SCC and Discount Rate",
+       caption = str_wrap(caption)) +
+  theme_minimal()
 
 ```
+
+
+Question 5
+
+```{r}
+# Policy A - BAU
+
+warming <- warming %>% 
+  mutate(warming_norm_damage, policy_A_opt1 = (warming_norm_damage / (1 + .02)^(...1)))
+
+policy_A_opt1_final <- sum(warming$policy_A_opt1[1:79])*.5
+
+warming <- warming %>% 
+  mutate(warming_norm_damage, policy_A_opt2 = ((1.5 * warming_norm_damage) / (1 + .02)^(...1)))
+
+policy_A_opt2_final <- sum(warming$policy_A_opt2[1:79])*.5
+
+policy_A <- policy_A_opt1_final + policy_A_opt2_final
+
+```
+
+
 
