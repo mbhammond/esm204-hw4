@@ -28,6 +28,7 @@ library(ggpubr)
 library(kableExtra)
 library(FinancialMath)
 library(lifecontingencies)
+library(readr)
 
 ```
 
@@ -46,12 +47,7 @@ warming <- read_csv(here("warming.csv"))
 ```{r}
 # Question 1 work
 
-ggplot(data = damage, aes(x = warming, y = damages)) +
-  stat_function(fun = damage_model, color = "purple") +
-  geom_point(size = 3) +
-  labs(x = "Warming (C)",
-       y = "Total Damages ($)") +
-  theme_minimal()
+
 
 
 damage$warming2 <- damage$warming^2
@@ -63,6 +59,14 @@ extract_eq(model = qm_damages,
            coef_digits = 4)
 
 damage_model <- function(x){-1059530137756.23*x + 19409275730643.3*x^2}
+
+ggplot(data = damage, aes(x = warming, y = damages)) +
+  stat_function(fun = damage_model, color = "purple") +
+  geom_point(size = 2) +
+  labs(x = "Warming (C)",
+       y = "Total Damages ($)") +
+  theme_minimal()
+
 
 ```
 
@@ -79,6 +83,7 @@ warming$warming_damage_diff_per_CO2 <- warming$warming_damage_diff/35000000000
 
 ##PUT PRETTY GRAPH HERE!!!'
 
+
 ```
 
 Question #3
@@ -87,7 +92,60 @@ Question #3
 NPV(cf0 = warming$warming_damage_diff_per_CO2[1], cf = (warming$warming_damage_diff_per_CO2), times = c(1:79), i = .01)
 ```
 
+
 ```{r}
-presentValue(cf = warming$warming_damage_diff_per_CO2 [1:79], t = c(1:79), 0.01)
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_1 = warming_damage_diff_per_CO2 / (1 + .01)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_2 = warming_damage_diff_per_CO2 / (1 + .02)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_3 = warming_damage_diff_per_CO2 / (1 + .03)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_4 = warming_damage_diff_per_CO2 / (1 + .04)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_5 = warming_damage_diff_per_CO2 / (1 + .05)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_6 = warming_damage_diff_per_CO2 / (1 + .06)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_7 = warming_damage_diff_per_CO2 / (1 + .07)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_8 = warming_damage_diff_per_CO2 / (1 + .08)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_9 = warming_damage_diff_per_CO2 / (1 + .09)^(...1))
+
+warming <- warming %>% 
+  mutate(warming_damage_diff_per_CO2, present_value_10 = warming_damage_diff_per_CO2 / (1 + .10)^(...1))
+
+pv_1 <- sum(warming$present_value_1[1:79])
+pv_2 <- sum(warming$present_value_2[1:79])
+pv_3 <- sum(warming$present_value_3[1:79])
+pv_4 <- sum(warming$present_value_4[1:79])
+pv_5 <- sum(warming$present_value_5[1:79])
+pv_6 <- sum(warming$present_value_6[1:79])
+pv_7 <- sum(warming$present_value_7[1:79])
+pv_8 <- sum(warming$present_value_8[1:79])
+pv_9 <- sum(warming$present_value_9[1:79])
+pv_10 <- sum(warming$present_value_10[1:79])
+
+
+scc <- c(pv_1, pv_2, pv_3, pv_4, pv_5, pv_6, pv_7, pv_8, pv_9, pv_10)
+discount_rate <- c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10)
+
+scc_rate <- data.frame(scc, discount_rate)
+
+ggplot(data = scc_rate, aes(y = scc, x = discount_rate)) +
+  geom_point() +
+  labs(x = "Discount Rate",
+       y = "Social Cost of Carbon",
+       title = "SCC and Discount Rate") +
+  theme_minimal()
 ```
 
