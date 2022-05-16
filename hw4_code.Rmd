@@ -26,6 +26,8 @@ library(equatiomatic)
 library(broom)
 library(ggpubr)
 library(kableExtra)
+library(FinancialMath)
+library(lifecontingencies)
 
 ```
 
@@ -79,10 +81,13 @@ warming$warming_damage_diff_per_CO2 <- warming$warming_damage_diff/35000000000
 
 ```
 
-
-## Question 3
+Question #3
 
 ```{r}
+NPV(cf0 = warming$warming_damage_diff_per_CO2[1], cf = (warming$warming_damage_diff_per_CO2), times = c(1:79), i = .01)
+```
 
+```{r}
+presentValue(cf = warming$warming_damage_diff_per_CO2 [1:79], t = c(1:79), 0.01)
 ```
 
