@@ -31,10 +31,37 @@ library(kableExtra)
 
 
 ```{r}
-damages <- read_csv(here("damages.csv"))
+damage <- read_csv(here("damages.csv"))
 
 warming <- read_csv(here("warming.csv"))
 ```
 
+
+
+## Question 1: Estimate a quadratic damage function
+
+
+```{r}
+# Question 1 work
+
+ggplot(data = damage, aes(x = warming, y = damages)) +
+  stat_function(fun = damage_model, color = "purple") +
+  geom_point(size = 3) +
+  labs(x = "Warming (C)",
+       y = "Total Damages ($)") +
+  theme_minimal()
+
+
+damage$warming2 <- damage$warming^2
+
+qm_damages <- lm(damages ~ 0 +  warming + warming2, data = damage)
+
+extract_eq(model = qm_damages, 
+           use_coefs = TRUE,
+           coef_digits = 4)
+
+damage_model <- function(x){-1059530137756.23*x + 19409275730643.3*x^2}
+
+```
 
 
