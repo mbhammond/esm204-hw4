@@ -210,7 +210,7 @@ warming <- warming %>%
   mutate(warming_norm_damage, pv_option_b = warming_norm_damage / (1 + .02)^(...1))
 
 warming <- warming %>%
-  mutate(warming_norm_damage, steady = warming_norm_damage[30] / (1 + .02)^(...1[30]))
+  mutate(warming_norm_damage, steady = warming_norm_damage[30] / (1 + .02)^(...1))
 
 
 present_value <- (warming$pv_option_b[1:29])
