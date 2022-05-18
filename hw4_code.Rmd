@@ -52,7 +52,7 @@ warming <- read_csv(here("warming.csv"))
 
 damage$warming2 <- damage$warming^2
 
-qm_damages <- lm(damages ~ 0 +  warming + warming2, data = damage)
+qm_damages <- lm(damages ~ 0 +  warming + warming2 - 1, data = damage)
 
 extract_eq(model = qm_damages, 
            use_coefs = TRUE,
