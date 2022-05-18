@@ -162,8 +162,8 @@ warming <- warming %>%
 
 pv_ramsey <- sum(warming$present_value_ramsey[1:79])
 
-scc <- pv_ramsey
-discount_rate <- .021
+scc_ramsey <- pv_ramsey
+discount_ramsey <- .021
 
 ramsey_rate <- data.frame(scc_ramsey, discount_ramsey)
 
@@ -194,8 +194,11 @@ warming <- warming %>%
 
 policy_A_opt1_final <- sum(warming$policy_A_opt1[1:79])*.5
 
+warming$warming_1.5_damage <- damage_model(warming$warming_baseline*1.5)
+
 warming <- warming %>% 
-  mutate(warming_norm_damage, policy_A_opt2 = ((1.5 * warming_norm_damage) / (1 + .02)^(...1)))
+  mutate(warming_1.5_damage, policy_A_opt2 = ((warming_1.5_damage) / (1 + .02)^(...1)))
+
 
 policy_A_opt2_final <- sum(warming$policy_A_opt2[1:79])*.5
 
@@ -229,5 +232,32 @@ df_2 <- data.frame(year = warming$year[30:79],
 policy_B_final_df <- rbind(df_1, df_2)
 
 policy_b_sum_pv <- sum(policy_B_final_df$present_value_b[1:79])
+```
+
+
+
+```{r}
+### Compare Policy A and Policy B
+# policy A has no implementation cost, policy B has x implementation cost
+
+policy_b_model <- function(x){policy_b_sum_pv+x}
+
+policy_a_model <- function(x){policy_A}
+
+ggplot() +
+  scale_color_manual(values = c('orange', 'purple2')) +
+  stat_function(fun = policy_b_model, color = 'orange') +
+  stat_function(fun = policy_a_model, color = 'purple2') +
+  ylim(0, 6e+15) +
+  xlim(0, 5e+15) +
+  labs(x = "Implenetation Cost ($)",
+       y = "Total Cost",
+       title = "Comparing Policy A and B Costs",
+       caption = "Figure X. BLAH BLAH") +
+  theme_minimal()
+
+dif_costs_model <- function(x){policy_A - (policy_b_sum_pv+x)}
+policy_equal <- uniroot(dif_costs_model, c(1e15, 2.5e15))
+
 ```
 
