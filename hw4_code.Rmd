@@ -1,6 +1,6 @@
 ---
 title: "ESM 204 HW 4"
-author: "Maggie, Van, and Ali"
+author: "Maggie Hammond, Savana Gonzalez, and Ali Martin"
 date: "5/16/2022"
 output: 
   html_document:
@@ -29,6 +29,8 @@ library(kableExtra)
 library(FinancialMath)
 library(lifecontingencies)
 library(readr)
+library(cowplot)
+
 
 ```
 
@@ -46,10 +48,6 @@ warming <- read_csv(here("warming.csv"))
 
 ```{r}
 # Question 1 work
-
-
-
-
 damage$warming2 <- damage$warming^2
 
 qm_damages <- lm(damages ~ 0 +  warming + warming2 - 1, data = damage)
@@ -81,12 +79,27 @@ warming$warming_damage_diff <- warming$warming_pulse_damage - warming$warming_no
 
 warming$warming_damage_diff_per_CO2 <- warming$warming_damage_diff/35000000000
 
-##PUT PRETTY GRAPH HERE!!!'
+
+## Graph 1:  Damages over time without pulse
+p1 <- ggplot(data = warming, aes(x = year, y = warming_norm_damage)) +
+  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature Under  \n Normal Conditions")
+
+## Graph 2: Damages Over time with the pulse
+p2 <- ggplot(data = warming, aes(x = year, y = warming_pulse_damage)) +
+  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature With  \n CO2 Pulse")
+
+## Graph 3: Difference in Damages over time from the pulse 
+p3 <- ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
+  geom_line()+ labs(x = "Year", y = "Difference in Damages from Climate Change ($)", title = "Annual Difference in Damages to Temperature \n With CO2 Pulse")
+
+## Graph 4: Difference in Damages over time from pulse per ton of Co2
+p4 <- ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
+  geom_line()+ labs(x = "Year", y = "Difference Damages from Climate Change ($)", title = "Annual Difference in Damages with Pulse per Ton of CO2")
 
 
 ```
 
-Question #3
+## Question #3
 
 ```{r}
 NPV(cf0 = warming$warming_damage_diff_per_CO2[1], cf = (warming$warming_damage_diff_per_CO2), times = c(1:79), i = .01)
@@ -184,7 +197,7 @@ ggplot() +
 ```
 
 
-Question 5
+## Question 5
 
 ```{r}
 # Policy A - BAU
@@ -253,7 +266,7 @@ ggplot() +
   labs(x = "Implenetation Cost ($)",
        y = "Total Cost",
        title = "Comparing Policy A and B Costs",
-       caption = "Figure X. BLAH BLAH") +
+       caption = "Figure X. Policy A (purple) indicates there is no implementation cost. Policy B (orange) shows there is an implementation cost of X") +
   theme_minimal()
 
 dif_costs_model <- function(x){policy_A - (policy_b_sum_pv+x)}
@@ -261,3 +274,8 @@ policy_equal <- uniroot(dif_costs_model, c(1e15, 2.5e15))
 
 ```
 
+Congress should implement Policy B
+
+## Question 6
+
+If society is more risk averse, they would most likely choose Policy B because the future damages are lower than for Policy A, and Policy B is less risky than Policy A. 
