@@ -43,7 +43,7 @@ warming <- read_csv(here("warming.csv"))
 
 
 
-## Question 1: Estimate a quadratic damage function
+## Question 1:
 
 
 ```{r}
@@ -81,25 +81,39 @@ warming$warming_damage_diff_per_CO2 <- warming$warming_damage_diff/35000000000
 
 
 ## Graph 1:  Damages over time without pulse
-p1 <- ggplot(data = warming, aes(x = year, y = warming_norm_damage)) +
-  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature Under  \n Normal Conditions")
+ggplot(data = warming, aes(x = year, y = warming_norm_damage)) +
+  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature Under Normal Conditions")
+```
 
+**Figure 1:** The plot shows the damages (in dollars)  per year under baseline climate. 
+
+
+```{r}
 ## Graph 2: Damages Over time with the pulse
-p2 <- ggplot(data = warming, aes(x = year, y = warming_pulse_damage)) +
-  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature With  \n CO2 Pulse")
+ ggplot(data = warming, aes(x = year, y = warming_pulse_damage)) +
+  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature With CO2 Pulse")
+```
 
+**Figure 2:** The plot shows damages (in dollars) per year with a 35 billion ton carbon pulse scenario.
+
+```{r}
 ## Graph 3: Difference in Damages over time from the pulse 
-p3 <- ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
-  geom_line()+ labs(x = "Year", y = "Difference in Damages from Climate Change ($)", title = "Annual Difference in Damages to Temperature \n With CO2 Pulse")
+ ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
+  geom_line()+ labs(x = "Year", y = "Difference in Damages from Climate Change ($)", title = "Annual Difference in Damages to Temperature With CO2 Pulse")
+```
 
+**Figure 3:** The plot shows the difference in damages (dollars) over time from the pulse scenario 
+
+```{r}
 ## Graph 4: Difference in Damages over time from pulse per ton of Co2
-p4 <- ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
+ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
   geom_line()+ labs(x = "Year", y = "Difference Damages from Climate Change ($)", title = "Annual Difference in Damages with Pulse per Ton of CO2")
-
 
 ```
 
-## Question #3
+**Figure 4:** The plot shows the difference in damages (dollars) over time from the pulse per ton of CO2.
+
+## Question 3
 
 ```{r}
 NPV(cf0 = warming$warming_damage_diff_per_CO2[1], cf = (warming$warming_damage_diff_per_CO2), times = c(1:79), i = .01)
@@ -164,6 +178,10 @@ ggplot(data = scc_rate, aes(y = scc, x = discount_rate)) +
   theme_minimal()
 ```
 
+**Figure 5:** The plot shows the social cost of carbon (SCC) caused by one additional unit of CO2 compared to the discount rate. 
+
+The discount rate affects the SCC because as the discount rate increases, the social cost of carbon decreases. A higher discount rate implies that people care less about the future than they do the present. 
+
 ## Question 4
 
 ```{r}
@@ -180,7 +198,7 @@ discount_ramsey <- .021
 
 ramsey_rate <- data.frame(scc_ramsey, discount_ramsey)
 
-caption <- "Figure X. the gold dot represents the Ramsey Rate discount rate and Social Cost of Carbon calculation"
+caption <- "Figure 6. the gold dot represents the Ramsey Rate discount rate and Social Cost of Carbon calculation"
 ggplot() +
   geom_point(data = scc_rate, 
              aes(x = discount_rate, y = scc), 
@@ -266,7 +284,7 @@ ggplot() +
   labs(x = "Implenetation Cost ($)",
        y = "Total Cost",
        title = "Comparing Policy A and B Costs",
-       caption = "Figure X. Policy A (purple) indicates there is no implementation cost. Policy B (orange) shows there is an implementation cost of X") +
+       caption = "Figure 7. Policy A (purple) indicates there is no implementation cost. Policy B (orange) shows there is an implementation cost of X") +
   theme_minimal()
 
 dif_costs_model <- function(x){policy_A - (policy_b_sum_pv+x)}
