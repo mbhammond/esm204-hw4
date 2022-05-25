@@ -274,7 +274,7 @@ policy_equal <- uniroot(dif_costs_model, c(1e15, 2.5e15))
 
 ```
 
-Congress should implement Policy B
+Congress should implement Policy B until it Policy A and Policy B are at the same point. After they intersect, Congress should implement Policy A because the total and implementation costs will be stable. 
 
 ## Question 6
 
