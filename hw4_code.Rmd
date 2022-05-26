@@ -60,9 +60,11 @@ damage_model <- function(x){-1059530137756.23*x + 19409275730643.3*x^2}
 
 ggplot(data = damage, aes(x = warming, y = damages)) +
   stat_function(fun = damage_model, color = "purple") +
-  geom_point(size = 2) +
+  geom_point(size = 1) +
   labs(x = "Warming (C)",
-       y = "Total Damages ($)") +
+       y = "Total Damages ($)",
+       title = "Total Damages ($) from the Change in Global Mean Temperature (C)",
+       caption = " Figure 1: The plot displays the total monetary damages in relation to the change in global mean temperature (C). The purple line signifies the quadratic damage model, while the black dots show the underlying data. ") +
   theme_minimal()
 
 
@@ -82,36 +84,46 @@ warming$warming_damage_diff_per_CO2 <- warming$warming_damage_diff/35000000000
 
 ## Graph 1:  Damages over time without pulse
 ggplot(data = warming, aes(x = year, y = warming_norm_damage)) +
-  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature Under Normal Conditions")
+  geom_line()+ 
+  labs(x = "Year", 
+       y = "Damages from Climate Change ($)", 
+      title = "Annual Damages to Temperature Under Normal Conditions",
+      caption = " Figure 2: The plot shows the damages (in dollars)  per year under baseline climate")
 ```
 
-**Figure 1:** The plot shows the damages (in dollars)  per year under baseline climate. 
 
 
 ```{r}
 ## Graph 2: Damages Over time with the pulse
  ggplot(data = warming, aes(x = year, y = warming_pulse_damage)) +
-  geom_line()+ labs(x = "Year", y = "Damages from Climate Change ($)", title = "Annual Damages to Temperature With CO2 Pulse")
+  geom_line()+ labs(x = "Year",
+                    y = "Damages from Climate Change ($)",
+                    title = "Annual Damages to Temperature With CO2 Pulse",
+                    caption = "Figure 3: The plot shows damages (in dollars) per year with a 35 billion ton carbon pulse scenario.")
 ```
 
-**Figure 2:** The plot shows damages (in dollars) per year with a 35 billion ton carbon pulse scenario.
+
 
 ```{r}
 ## Graph 3: Difference in Damages over time from the pulse 
  ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
-  geom_line()+ labs(x = "Year", y = "Difference in Damages from Climate Change ($)", title = "Annual Difference in Damages to Temperature With CO2 Pulse")
+  geom_line()+ labs(x = "Year", 
+                    y = "Difference in Damages from Climate Change ($)", 
+                    title = "Annual Difference in Damages to Temperature With CO2 Pulse",
+                    caption = "Figure 4:The plot shows the difference in damages (dollars) over time from the pulse scenario  " )
 ```
 
-**Figure 3:** The plot shows the difference in damages (dollars) over time from the pulse scenario 
 
 ```{r}
 ## Graph 4: Difference in Damages over time from pulse per ton of Co2
 ggplot(data = warming, aes(x = year, y = warming_damage_diff)) +
-  geom_line()+ labs(x = "Year", y = "Difference Damages from Climate Change ($)", title = "Annual Difference in Damages with Pulse per Ton of CO2")
+  geom_line()+ labs(x = "Year", 
+                    y = "Difference Damages from Climate Change ($)", 
+                    title = "Annual Difference in Damages with Pulse per Ton of CO2",
+                    caption = "Figure 5:The plot shows the difference in damages (dollars) over time from the pulse per ton of CO2. ")
 
 ```
 
-**Figure 4:** The plot shows the difference in damages (dollars) over time from the pulse per ton of CO2.
 
 ## Question 3
 
@@ -174,11 +186,11 @@ ggplot(data = scc_rate, aes(y = scc, x = discount_rate)) +
   geom_point() +
   labs(x = "Discount Rate",
        y = "Social Cost of Carbon",
-       title = "SCC and Discount Rate") +
+       title = "SCC and Discount Rate",
+       caption = "Figure 6:  The plot shows the social cost of carbon (SCC) caused by one additional unit of CO2 compared to the discount rate. ") +
   theme_minimal()
 ```
 
-**Figure 5:** The plot shows the social cost of carbon (SCC) caused by one additional unit of CO2 compared to the discount rate. 
 
 The discount rate affects the SCC because as the discount rate increases, the social cost of carbon decreases. A higher discount rate implies that people care less about the future than they do the present. 
 
@@ -288,11 +300,11 @@ ggplot() +
   theme_minimal()
 
 dif_costs_model <- function(x){policy_A - (policy_b_sum_pv+x)}
-policy_equal <- uniroot(dif_costs_model, c(1e15, 2.5e15))
+policy_equal <- uniroot(dif_costs_model, c(1e15, 2.5e15))$root
 
 ```
 
-Congress should implement Policy B until it Policy A and Policy B are at the same point. After they intersect, Congress should implement Policy A because the total and implementation costs will be stable. 
+Congress should implement Policy B until it Policy A and Policy B intersect at `r round(policy_equal, 0)` dollars. Beyond this point, Congress should implement Policy A because the total and implementation costs will be stable. 
 
 ## Question 6
 
